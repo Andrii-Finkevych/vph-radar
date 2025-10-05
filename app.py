@@ -58,9 +58,38 @@ PRESETS = {
 if "ran" not in st.session_state:
     st.session_state.ran = False
 if "channels_text" not in st.session_state:
-    st.session_state.channels_text = ""
+    # автозаповнення списком каналів
+    st.session_state.channels_text = """https://www.youtube.com/@CreamGirlVibes
+https://www.youtube.com/@MyMelodyMuse
+https://www.youtube.com/@melodyisheremusic
+https://www.youtube.com/@solana.music.studio
+https://www.youtube.com/@Eunbiai
+https://www.youtube.com/@soraishere2205
+https://www.youtube.com/@DreamyisHere-k3n
+https://www.youtube.com/@AIMusicClara
+https://www.youtube.com/@melodyvibesworlds
+https://www.youtube.com/@Charming-girl-video
+https://www.youtube.com/@GinzaKage
+https://www.youtube.com/@HealuEcho
+https://www.youtube.com/@MiaBella2124
+https://www.youtube.com/@Just_AI_Dance
+https://www.youtube.com/@IvyRoseai
+https://www.youtube.com/@SoundtheMusic-e5m
+https://www.youtube.com/@Cream_Harmony
+https://www.youtube.com/@LaurielNoir/videos
+https://www.youtube.com/@charmingmusicvibes
+https://www.youtube.com/@WhispersLight
+https://www.youtube.com/@vanessa-vlog-5uj
+https://www.youtube.com/@CandyBabe-n2d
+https://www.youtube.com/@CharmingGirls-Official
+https://www.youtube.com/@MeliaLune/videos
+https://www.youtube.com/@AImagined-j6f/videos
+https://www.youtube.com/@Wonyx-music/videos
+https://www.youtube.com/@himi.ai.fashion/videos
+https://www.youtube.com/@misssweet-video/videos
+https://www.youtube.com/@beautyandthemusicchannel/videos"""
 if "sort_by" not in st.session_state:
-    st.session_state.sort_by = "За Viral"
+    st.session_state.sort_by = "За датою"
 
 # ======================================================================================
 # Утиліти
@@ -126,6 +155,17 @@ def localize_and_format(ts_utc: dt.datetime, tzname: str) -> str:
     tz = pytz.timezone(tzname)
     local_dt = ts_utc.astimezone(tz)
     return local_dt.strftime("%Y-%m-%d %H:%M")
+
+def format_elapsed_since(published_utc: dt.datetime, now_utc: dt.datetime) -> str:
+    """Повертає рядок 'Після публікації' з точністю до години (дні та години)."""
+    total_hours = int((now_utc - published_utc).total_seconds() // 3600)
+    if total_hours < 0:
+        total_hours = 0
+    days = total_hours // 24
+    hours = total_hours % 24
+    if days > 0:
+        return f"{days} дн {hours:02d} год"
+    return f"{hours} год"
 
 def extract_channel_id(text: str) -> dict:
     text = text.strip()
@@ -237,21 +277,24 @@ with left:
 
 c1, c2, c3 = st.columns([1, 1, 2])
 with c1:
-    min_hms = st.text_input("Тривалість (від)", value="0:00:60")        # 60 секунд
+    min_hms = st.text_input("Тривалість (від)", value="0:01:00")        # 60 секунд (більш звично)
 with c2:
     max_hms = st.text_input("Тривалість (до)", value="2:00:00")    # 2 години
 with c3:
     today_local = dt.datetime.now(pytz.timezone(TZ_NAME)).date()
+    # дефолт — останні 3 дні (сьогодні та два попередні)
     date_from, date_to = st.date_input(
         "Діапазон опублікованих відео",
-        value=(today_local - dt.timedelta(days=5), today_local),
+        value=(today_local - dt.timedelta(days=3), today_local),
     )
 
-sort_options = ["За Viral", "За датою", "За переглядами", "За VPH", "За Multiplier"]
+# видалено "За Viral"
+sort_options = ["За датою", "За переглядами", "За VPH", "За Multiplier"]
+default_sort = st.session_state.sort_by if st.session_state.sort_by in sort_options else sort_options[0]
 sort_by = st.selectbox(
     "Сортувати результати:",
     options=sort_options,
-    index=sort_options.index(st.session_state.sort_by),
+    index=sort_options.index(default_sort),
     key="sort_by",
 )
 
@@ -370,6 +413,7 @@ for line in [ln.strip() for ln in channels_input.splitlines() if ln.strip()]:
             title = sn.get("title", "")
             url   = f"https://www.youtube.com/watch?v={vid}"
             published_local_str = localize_and_format(published_utc, TZ_NAME)
+            since_published_str = format_elapsed_since(published_utc, now_utc)
 
             rows.append({
                 "Канал": channel_title,
@@ -382,6 +426,7 @@ for line in [ln.strip() for ln in channels_input.splitlines() if ln.strip()]:
                 "VPH": None,
                 "Тривалість": dur_str,
                 "Опубліковано": published_local_str,
+                "Після публікації": since_published_str,
                 "UTC_Published": published_utc,
                 "URL": url,                       # простий текст — легко копіювати
                 "age_hours": age_hours,
@@ -397,26 +442,9 @@ if not rows:
 df = pd.DataFrame(rows)
 
 # ======================================================================================
-# VIRAL (калібрована шкала у “іксах”)
-#  Еталон: 100k views за 24 год на каналі з 100k subs ≈ 10x;
-#          1M views за 24 год на 100k subs ≈ 100x.
+# Сортування (без "Viral")
 # ======================================================================================
-ALPHA_H = 0.5   # год — антишум для дуже свіжих відео
-C = 10.0 * (24.0 + ALPHA_H) / 24.0  # ~10.2083
-
-# multiplier: якщо підписники невідомі — нейтрально 1.0x, щоб не занижувати відео
-m = df["Multiplier_raw"].where(pd.notna(df["Multiplier_raw"]), 1.0)
-
-fresh = 24.0 / (df["age_hours"] + ALPHA_H)
-df["Viral_raw"] = C * m * fresh
-df["Viral"] = df["Viral_raw"].apply(lambda v: f"{v:.1f}x")
-
-# ======================================================================================
-# Сортування (дефолт — За Viral)
-# ======================================================================================
-if sort_by == "За Viral":
-    df = df.sort_values("Viral_raw", ascending=False)
-elif sort_by == "За датою":
+if sort_by == "За датою":
     df = df.sort_values("UTC_Published", ascending=False)
 elif sort_by == "За переглядами":
     df = df.sort_values("Перегляди", ascending=False)
@@ -433,10 +461,10 @@ df["Перегляди"]  = df["Перегляди"].apply(format_int)
 df["Multiplier"] = df["Multiplier_raw"].apply(lambda v: format_multiplier(v) if pd.notna(v) else "")
 df["VPH"]        = df["VPH_raw"].apply(format_vph)
 
-# Порядок колонок: Viral між “Перегляди” і “Multiplier”
+# Порядок колонок (без "Viral", додано "Після публікації")
 columns_order = [
-    "Канал","Назва відео","Підписники","Перегляди","Viral","Multiplier","VPH",
-    "Тривалість","Опубліковано","URL"
+    "Канал","Назва відео","Підписники","Перегляди","Multiplier","VPH",
+    "Тривалість","Опубліковано","Після публікації","URL"
 ]
 df_show = df[columns_order].copy()
 
@@ -452,7 +480,7 @@ gob.configure_default_column(
 )
 gob.configure_column("Назва відео", width=420)
 gob.configure_column("URL", width=360)
-for c in ["Підписники","Перегляди","Viral","Multiplier","VPH","Тривалість","Опубліковано"]:
+for c in ["Підписники","Перегляди","Multiplier","VPH","Тривалість","Опубліковано","Після публікації"]:
     gob.configure_column(c, width=140)
 
 grid_opts = gob.build()
