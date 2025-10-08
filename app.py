@@ -22,7 +22,7 @@ st.set_page_config(
 # ======================================================================================
 # API ключ (вшитий) і базовий URL
 # ======================================================================================
-API_KEY = "AIzaSyAi5tON3ICl353D6-8MKUSalT2gqkwNbYA"
+API_KEY = "AIzaSyApr2mhue6CZthtma_vKkVk3qNaGQIk1YQ"
 YOUTUBE_API = "https://www.googleapis.com/youtube/v3"
 TZ_NAME = "Europe/Kyiv"   # фіксована локальна таймзона
 
