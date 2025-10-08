@@ -72,7 +72,6 @@ https://www.youtube.com/@Charming-girl-video
 https://www.youtube.com/@GinzaKage
 https://www.youtube.com/@HealuEcho
 https://www.youtube.com/@MiaBella2124
-https://www.youtube.com/@Just_AI_Dance
 https://www.youtube.com/@IvyRoseai
 https://www.youtube.com/@SoundtheMusic-e5m
 https://www.youtube.com/@Cream_Harmony
