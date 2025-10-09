@@ -30,24 +30,20 @@ TZ_NAME = "Europe/Kyiv"   # фіксована локальна таймзона
 # PRESETS — готові набори каналів (редагуй під себе)
 # ======================================================================================
 PRESETS = {
-    "Ethereal Vibes": [
-        "https://www.youtube.com/@Just_AI_Dance", "https://www.youtube.com/@ImRavina", "https://www.youtube.com/@Ryusias_day", "https://www.youtube.com/@MyMelodyMuse", "https://www.youtube.com/@melodyisheremusic",
-        "https://www.youtube.com/@vanessa-vlog-5uj", "https://www.youtube.com/@melodyvibesworlds", "https://www.youtube.com/@LaurielNoir/featured", "https://www.youtube.com/@misssweet-video/videos",
-        "https://www.youtube.com/@CandyBabe-n2d", "https://www.youtube.com/@NamiaRhea", "https://www.youtube.com/@Charming-girl-video", 
-        "https://www.youtube.com/@Eunbiai", "https://www.youtube.com/@SarahTaylorai", "https://www.youtube.com/@IvyRoseai", "https://www.youtube.com/@charmingmusicvibes",
-        "https://www.youtube.com/@AI绝色添香", "https://www.youtube.com/@LeeYunaai", "https://www.youtube.com/@AIVlogLookbook/featured",
-        "https://www.youtube.com/@MeliaLune/featured", "https://www.youtube.com/@ArinsMemory", "https://www.youtube.com/@DreamyisHere-k3n",
-        "https://www.youtube.com/@sherryishere4yt", "https://www.youtube.com/@GinzanoKage", 
+    "Yumi Vibes": [
+        "https://www.youtube.com/@MyMelodyMuse", "https://www.youtube.com/@melodyisheremusic", "https://www.youtube.com/@solana.music.studio",
+        "https://www.youtube.com/@Eunbiai", "https://www.youtube.com/@soraishere2205", "https://www.youtube.com/@DreamyisHere-k3n", "https://www.youtube.com/@AIMusicClara",
+        "https://www.youtube.com/@melodyvibesworlds", "https://www.youtube.com/@Charming-girl-video", "https://www.youtube.com/@GinzaKage", "https://www.youtube.com/@HealuEcho",
+        "https://www.youtube.com/@MiaBella2124", "https://www.youtube.com/@IvyRoseai", "https://www.youtube.com/@SoundtheMusic-e5m", "https://www.youtube.com/@Cream_Harmony",
+        "https://www.youtube.com/@LaurielNoir/videos", "https://www.youtube.com/@charmingmusicvibes", "https://www.youtube.com/@WhispersLight", "https://www.youtube.com/@vanessa-vlog-5uj",
+        "https://www.youtube.com/@CandyBabe-n2d", "https://www.youtube.com/@CharmingGirls-Official", "https://www.youtube.com/@MeliaLune/videos", "https://www.youtube.com/@AImagined-j6f/videos",
+        "https://www.youtube.com/@Wonyx-music/videos", "https://www.youtube.com/@himi.ai.fashion/videos", "https://www.youtube.com/@misssweet-video/videos", "https://www.youtube.com/@beautyandthemusicchannel/videos",
+        "https://www.youtube.com/@CreamGirlVibes",
         # додай сюди інші канали...
     ],
-    "Yumi Vibes": [
-        "https://www.youtube.com/@Just_AI_Dance", "https://www.youtube.com/@MyMelodyMuse", "https://www.youtube.com/@melodyisheremusic",
-        "https://www.youtube.com/@vanessa-vlog-5uj", "https://www.youtube.com/@melodyvibesworlds", "https://www.youtube.com/@LaurielNoir/featured", 
-        "https://www.youtube.com/@CandyBabe-n2d", "https://www.youtube.com/@NamiaRhea", "https://www.youtube.com/@Charming-girl-video", 
-        "https://www.youtube.com/@Eunbiai", "https://www.youtube.com/@SarahTaylorai", "https://www.youtube.com/@IvyRoseai", "https://www.youtube.com/@charmingmusicvibes",
-        "https://www.youtube.com/@AI绝色添香", "https://www.youtube.com/@LeeYunaai", "https://www.youtube.com/@AIVlogLookbook/featured",
-        "https://www.youtube.com/@MeliaLune/featured", "https://www.youtube.com/@ArinsMemory", "https://www.youtube.com/@DreamyisHere-k3n",
-        "https://www.youtube.com/@sherryishere4yt", "https://www.youtube.com/@GinzanoKage", "https://www.youtube.com/@melodyvibesworlds", 
+    "Enchanta Univers": [
+        "https://www.youtube.com/@AMBIENCLY", "https://www.youtube.com/@TheLuxuryDimension", "https://www.youtube.com/@TheAmbienceGirl",
+        "https://www.youtube.com/@TheShiftingRealms", "https://www.youtube.com/@CocoDream-coco", "https://www.youtube.com/@CleverSpacesGirl",
         # додай сюди інші канали...
     ],
 }
@@ -59,34 +55,7 @@ if "ran" not in st.session_state:
     st.session_state.ran = False
 if "channels_text" not in st.session_state:
     # автозаповнення списком каналів
-    st.session_state.channels_text = """https://www.youtube.com/@CreamGirlVibes
-https://www.youtube.com/@MyMelodyMuse
-https://www.youtube.com/@melodyisheremusic
-https://www.youtube.com/@solana.music.studio
-https://www.youtube.com/@Eunbiai
-https://www.youtube.com/@soraishere2205
-https://www.youtube.com/@DreamyisHere-k3n
-https://www.youtube.com/@AIMusicClara
-https://www.youtube.com/@melodyvibesworlds
-https://www.youtube.com/@Charming-girl-video
-https://www.youtube.com/@GinzaKage
-https://www.youtube.com/@HealuEcho
-https://www.youtube.com/@MiaBella2124
-https://www.youtube.com/@IvyRoseai
-https://www.youtube.com/@SoundtheMusic-e5m
-https://www.youtube.com/@Cream_Harmony
-https://www.youtube.com/@LaurielNoir/videos
-https://www.youtube.com/@charmingmusicvibes
-https://www.youtube.com/@WhispersLight
-https://www.youtube.com/@vanessa-vlog-5uj
-https://www.youtube.com/@CandyBabe-n2d
-https://www.youtube.com/@CharmingGirls-Official
-https://www.youtube.com/@MeliaLune/videos
-https://www.youtube.com/@AImagined-j6f/videos
-https://www.youtube.com/@Wonyx-music/videos
-https://www.youtube.com/@himi.ai.fashion/videos
-https://www.youtube.com/@misssweet-video/videos
-https://www.youtube.com/@beautyandthemusicchannel/videos"""
+    st.session_state.channels_text = Hello
 if "sort_by" not in st.session_state:
     st.session_state.sort_by = "За датою"
 
