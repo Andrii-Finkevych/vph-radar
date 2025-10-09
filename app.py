@@ -55,7 +55,7 @@ if "ran" not in st.session_state:
     st.session_state.ran = False
 if "channels_text" not in st.session_state:
     # автозаповнення списком каналів
-    st.session_state.channels_text = Hello
+    st.session_state.channels_text = "Hello",
 if "sort_by" not in st.session_state:
     st.session_state.sort_by = "За датою"
 
