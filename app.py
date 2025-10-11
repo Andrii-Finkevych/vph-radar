@@ -46,6 +46,11 @@ PRESETS = {
         "https://www.youtube.com/@TheShiftingRealms", "https://www.youtube.com/@CocoDream-coco", "https://www.youtube.com/@CleverSpacesGirl",
         # додай сюди інші канали...
     ],
+    "Fravix": [
+        "https://www.youtube.com/@SimplePaintOfficial/videos", "https://www.youtube.com/@ThePaintExplainer/videos", "https://www.youtube.com/@ThePainfulExplainer/videos",
+        "https://www.youtube.com/@ATalkingHat/videos",
+        # додай сюди інші канали...
+    ],
 }
 
 # ======================================================================================
